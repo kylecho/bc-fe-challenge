@@ -6,12 +6,15 @@ class App {
       params: {
         name: '',
         start: 0,
-        limit: 20,
+        limit: 30,
         laborTypes: []
       }
     }
 
-    this.handleSearchChange = this.debounce(this.handleSearchChange.bind(this), 1000)
+    this.handleSearchChange = this.debounce(
+      this.handleSearchChange.bind(this),
+      1000
+    )
     this.handleCompanyClick = this.handleCompanyClick.bind(this)
     this.fetch = this.fetch.bind(this)
   }
@@ -29,9 +32,10 @@ class App {
     this.fetchCompany(this.state.selected)
   }
 
-  fetch (q) {
+  fetch (q, limit = this.state.params.limit) {
+    console.log(limit)
     return window.fetch(
-      `${this.state.apiUrl}/?q=${q}`,
+      `${this.state.apiUrl}/?q=${q}&limit=${limit}`,
       {method: 'get'}
     )
   }
