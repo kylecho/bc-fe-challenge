@@ -11,7 +11,7 @@ class App {
       }
     }
 
-    this.handleSearchChange = this.handleSearchChange.bind(this)
+    this.handleSearchChange = this.debounce(this.handleSearchChange.bind(this), 1000)
     this.handleCompanyClick = this.handleCompanyClick.bind(this)
     this.fetch = this.fetch.bind(this)
   }
@@ -77,8 +77,24 @@ class App {
     name.appendChild(document.createTextNode(company.name))
     const phone = document.createElement('p')
     phone.appendChild(document.createTextNode(company.phone))
+    const website = document.createElement('p')
+    website.appendChild(document.createTextNode(company.website))
     detail.appendChild(name)
     detail.appendChild(phone)
+    detail.appendChild(website)
+  }
+
+  debounce (callback, wait, context = this) {
+    let timeout = null
+    let callbackArgs = null
+
+    const later = () => callback.apply(context, callbackArgs)
+
+    return function () {
+      callbackArgs = arguments
+      clearTimeout(timeout)
+      timeout = setTimeout(later, wait)
+    }
   }
 }
 
