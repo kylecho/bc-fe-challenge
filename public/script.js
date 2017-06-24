@@ -15,36 +15,63 @@ class App {
       this.handleSearchChange.bind(this),
       1000
     )
+    this.handleLimitChange = this.debounce(
+      this.handleLimitChange.bind(this),
+      1000
+    )
+    this.handleStartChange = this.debounce(
+      this.handleStartChange.bind(this),
+      1000
+    )
     this.handleCompanyClick = this.handleCompanyClick.bind(this)
     this.fetch = this.fetch.bind(this)
   }
 
   handleSearchChange (e) {
     const name = e.target.value
+    const { limit, start } = this.state.params
     this.state.params.name = name
-    this.fetchCompanies(name)
+    this.fetchCompanies(name, limit, start)
+  }
+
+  handleLimitChange (e) {
+    const limit = e.target.value
+    const { name, start } = this.state.params
+    this.state.params.limit = limit
+    this.fetchCompanies(name, limit, start)
+  }
+
+  handleStartChange (e) {
+    const start = e.target.value
+    const { name, limit } = this.state.params
+    this.state.params.start = start
+    this.fetchCompanies(name, limit, start)
   }
 
   handleCompanyClick (e) {
     const name = e.target.textContent
+    console.log(this.state.params)
     this.state.selected = name
     // document.getElementById('search').value = this.state.selected
-    this.fetchCompany(this.state.selected)
+    this.fetchCompany(this.state.selected, 1, 0)
   }
 
-  fetch (q, limit = this.state.params.limit) {
+  fetch (
+    q,
+    limit = this.state.params.limit,
+    start = this.state.params.start
+  ) {
     console.log(limit)
     return window.fetch(
-      `${this.state.apiUrl}/?q=${q}&limit=${limit}`,
+      `${this.state.apiUrl}/?q=${q}&limit=${limit}&start=${start}`,
       {method: 'get'}
     )
   }
 
-  fetchCompanies (q) {
-    this.fetch(q)
+  fetchCompanies (q, limit, start) {
+    this.fetch(q, limit, start)
     .then((res) => {
       res.json().then((data) => {
-        console.log(data)
         const results = data.results
         const ul = document.getElementById('company-list')
         this.renderList(ul, results)
@@ -53,8 +80,8 @@ class App {
     .catch((err) => console.error(err))
   }
 
-  fetchCompany (q) {
-    this.fetch(q)
+  fetchCompany (q, limit, start) {
+    this.fetch(q, limit, start)
     .then((res) => {
       res.json().then((data) => {
         console.log(data)
@@ -107,8 +134,12 @@ const elById = (el) => document.getElementById(el)
 
 window.onload = () => {
   console.log('loaded!')
-  const searchBar = elById('search')
+  const searchBar = elById('search-text')
+  const searchLimit = elById('search-limit')
+  const searchStart = elById('search-start')
   const companyList = elById('company-list')
   searchBar.onkeyup = app.handleSearchChange
+  searchLimit.onkeyup = app.handleLimitChange
+  searchStart.onkeyup = app.handleStartChange
   companyList.onclick = app.handleCompanyClick
 }
