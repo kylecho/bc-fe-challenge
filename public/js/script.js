@@ -6,7 +6,7 @@ class App {
       params: {
         name: '',
         start: 0,
-        limit: 30,
+        limit: 20,
         laborTypes: []
       }
     }
@@ -29,22 +29,25 @@ class App {
 
   handleSearchChange (e) {
     const name = e.target.value
-    const { limit, start } = this.state.params
+    const start = 0
+    const { limit } = this.state.params
     this.state.params.name = name
+    this.state.params.start = start
     this.fetchCompanies(name, limit, start)
   }
 
   handleLimitChange (e) {
     const limit = e.target.value
-    const { name, start } = this.state.params
-    this.state.params.limit = limit
+    const start = 0
+    const { name } = this.state.params
+    this.state.params.limit = parseInt(limit)
     this.fetchCompanies(name, limit, start)
   }
 
   handleStartChange (e) {
     const start = e.target.value
     const { name, limit } = this.state.params
-    this.state.params.start = start
+    this.state.params.start = parseInt(start)
     this.fetchCompanies(name, limit, start)
   }
 
@@ -67,13 +70,20 @@ class App {
     )
   }
 
-  fetchCompanies (q, limit, start) {
+  fetchMore () {
+    const start = this.state.params.start + this.state.params.limit
+    this.state.params.start = start
+    const { name, limit } = this.state.params
+    this.fetchCompanies(name, limit, start, true)
+  }
+
+  fetchCompanies (q, limit, start, more = false) {
     this.fetch(q, limit, start)
     .then((res) => {
       res.json().then((data) => {
         const results = data.results
         const ul = document.getElementById('company-list')
-        this.renderList(ul, results)
+        this.renderList(ul, results, more)
       })
     })
     .catch((err) => console.error(err))
@@ -92,8 +102,10 @@ class App {
     .catch((err) => console.error(err))
   }
 
-  renderList (ul, array) {
-    ul.innerHTML = ''
+  renderList (ul, array, more) {
+    if (!more) {
+      ul.innerHTML = ''
+    }
     for (let i = 0; i < array.length; i++) {
       const item = document.createElement('li')
       item.appendChild(document.createTextNode(array[i].name))
@@ -157,4 +169,10 @@ window.onload = () => {
   searchLimit.onkeyup = app.handleLimitChange
   searchStart.onkeyup = app.handleStartChange
   companyList.onclick = app.handleCompanyClick
+
+  window.onscroll = () => {
+    if ((window.innerHeight + window.scrollY >= document.body.offsetHeight)) {
+      app.fetchMore()
+    }
+  }
 }
