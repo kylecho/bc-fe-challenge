@@ -53,7 +53,6 @@ class App {
 
   handleCompanyClick (e) {
     const name = e.target.textContent
-    console.log(this.state.params)
     this.state.selected = name
     this.fetchCompany(this.state.selected, 1, 0)
   }
@@ -63,7 +62,6 @@ class App {
     limit = this.state.params.limit,
     start = this.state.params.start
   ) {
-    console.log(limit)
     return window.fetch(
       `${this.state.apiUrl}/?q=${q}&limit=${limit}&start=${start}`,
       {method: 'get'}
@@ -93,7 +91,6 @@ class App {
     this.fetch(q, limit, start)
     .then((res) => {
       res.json().then((data) => {
-        console.log(data)
         const company = data.results.length > 0 && data.results[0]
         const companyDetail = document.getElementById('company-detail')
         this.renderDetail(companyDetail, company)
@@ -114,13 +111,20 @@ class App {
   }
 
   renderDetail (detail, company) {
-    const avatar = detail.children[0]
+    this.renderAvatar(detail.children[0], company)
+    this.renderDesctiption(detail.children[1], company)
+  }
+
+  renderAvatar (avatar, company) {
     avatar.innerHTML = ''
-    const desc = detail.children[1]
-    desc.innerHTML = ''
     const avatarEl = document.createElement('div')
     this.addClass(avatarEl, 'company-avatar-img')
     avatarEl.setAttribute('style', `background-image: url(${company.avatarUrl})`)
+    avatar.appendChild(avatarEl)
+  }
+
+  renderDesctiption (desc, company) {
+    desc.innerHTML = ''
     const name = document.createElement('p')
     name.appendChild(document.createTextNode(company.name))
     const phone = document.createElement('p')
@@ -132,7 +136,6 @@ class App {
     websiteLink.setAttribute('target', '_blank')
     websiteLink.appendChild(document.createTextNode(company.website))
     website.appendChild(websiteLink)
-    avatar.appendChild(avatarEl)
     desc.appendChild(name)
     desc.appendChild(phone)
     desc.appendChild(website)
@@ -160,7 +163,6 @@ const app = new App()
 const elById = (el) => document.getElementById(el)
 
 window.onload = () => {
-  console.log('loaded!')
   const searchBar = elById('search-text')
   const searchLimit = elById('search-limit')
   const searchStart = elById('search-start')
