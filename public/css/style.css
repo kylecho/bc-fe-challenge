@@ -11,6 +11,10 @@ p {
   font-size: 24px;
 }
 
+a {
+  color: #fff;
+}
+
 .p-last {
   margin-bottom: 0;
 }
