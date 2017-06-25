@@ -9,15 +9,17 @@
   </head>
   <body>
     <div id="app">
-      <div id="company-detail">
-        <div class="company-avatar"></div>
-        <div class="company-desc"></div>
-      </div>
-      <div class="field-container">
-        <input id="search-text" class="field" type="text" placeholder="Search company names.." />
-        <input id="search-limit" class="field" type="number" placeholder="Limit to.. (default 30)" >
-        <input id="search-start" class="field last" type="number"
-        placeholder="Start from.." >
+      <div class="fixed">
+        <div id="company-detail">
+          <div class="company-avatar"></div>
+          <div class="company-desc"></div>
+        </div>
+        <div class="field-container">
+          <input id="search-text" class="field" type="text" placeholder="Search company names.." />
+          <input id="search-limit" class="field" type="number" placeholder="Limit to.. (default 30)" >
+          <input id="search-start" class="field last" type="number"
+          placeholder="Start from.." >
+        </div>
       </div>
       <ul id="company-list"></ul>
     </div>

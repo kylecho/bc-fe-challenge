@@ -53,7 +53,6 @@ class App {
     console.log(this.state.params)
     this.state.selected = name
     this.fetchCompany(this.state.selected, 1, 0)
-    window.scrollTo(document.body, 0, 100)
   }
 
   fetch (

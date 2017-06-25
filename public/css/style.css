@@ -19,11 +19,17 @@ p {
   background-color: #fafafa;
 }
 
+.fixed {
+  position: fixed;
+  width: 100%;
+}
+
 #company-detail {
   padding: 16px;
   background-color: #4DAAA7;
   color: #fff;
   display: flex;
+  min-height: 104px;
 }
 
 .company-avatar {
@@ -46,6 +52,7 @@ p {
 .field-container {
   padding: 16px;
   display: flex;
+  background-color: #fff;
 }
 
 .field {
@@ -67,6 +74,7 @@ p {
   margin: 0;
   padding: 0 16px 0 16px;
   color: #0095dd;
+  padding-top: 204px;
 }
 
 #company-list li {
