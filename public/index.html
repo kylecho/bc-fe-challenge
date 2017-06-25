@@ -3,15 +3,22 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="text/javascript" src="/script.js" async></script>
+      <link rel="stylesheet" type="text/css" href="/css/style.css">
+      <script type="text/javascript" src="/js/script.js" async></script>
     <title>BC frontend challenge</title>
   </head>
   <body>
     <div id="app">
-      <div id="company-detail"></div>
-      <input id="search-text" type="text" placeholder="search companies.." />
-      <input id="search-limit" type="number" placeholder="30" >
-      <input id="search-start" type="number" placeholder="0" >
+      <div id="company-detail">
+        <div class="company-avatar"></div>
+        <div class="company-desc"></div>
+      </div>
+      <div class="field-container">
+        <input id="search-text" class="field" type="text" placeholder="Search company names.." />
+        <input id="search-limit" class="field" type="number" placeholder="Limit to.. (default 30)" >
+        <input id="search-start" class="field last" type="number"
+        placeholder="Start from.." >
+      </div>
       <ul id="company-list"></ul>
     </div>
   </body>

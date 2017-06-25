@@ -52,8 +52,8 @@ class App {
     const name = e.target.textContent
     console.log(this.state.params)
     this.state.selected = name
-    // document.getElementById('search').value = this.state.selected
     this.fetchCompany(this.state.selected, 1, 0)
+    window.scrollTo(document.body, 0, 100)
   }
 
   fetch (
@@ -103,16 +103,32 @@ class App {
   }
 
   renderDetail (detail, company) {
-    detail.innerHTML = ''
+    const avatar = detail.children[0]
+    avatar.innerHTML = ''
+    const desc = detail.children[1]
+    desc.innerHTML = ''
+    const avatarEl = document.createElement('div')
+    this.addClass(avatarEl, 'company-avatar-img')
+    avatarEl.setAttribute('style', `background-image: url(${company.avatarUrl})`)
     const name = document.createElement('p')
     name.appendChild(document.createTextNode(company.name))
     const phone = document.createElement('p')
     phone.appendChild(document.createTextNode(company.phone))
     const website = document.createElement('p')
-    website.appendChild(document.createTextNode(company.website))
-    detail.appendChild(name)
-    detail.appendChild(phone)
-    detail.appendChild(website)
+    this.addClass(website, 'p-last')
+    const websiteLink = document.createElement('a')
+    websiteLink.setAttribute('href', company.website)
+    websiteLink.setAttribute('target', '_blank')
+    websiteLink.appendChild(document.createTextNode(company.website))
+    website.appendChild(websiteLink)
+    avatar.appendChild(avatarEl)
+    desc.appendChild(name)
+    desc.appendChild(phone)
+    desc.appendChild(website)
+  }
+
+  addClass (el, className) {
+    el.classList.add(className)
   }
 
   debounce (callback, wait, context = this) {
